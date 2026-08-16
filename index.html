@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReadmeX — README Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/form.css" />
+  <link rel="stylesheet" href="css/preview.css" />
+  <link rel="stylesheet" href="css/score.css" />
+  <link rel="stylesheet" href="css/history.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar__brand">
+      <span class="brand-icon">⬡</span>
+      <span class="brand-name">Readme<span class="brand-x">X</span></span>
+    </div>
+    <nav class="topbar__nav">
+      <button class="nav-btn" id="historyToggle" title="Recent Projects">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        History
+      </button>
+      <button class="nav-btn" id="templateToggle">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        Templates
+      </button>
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <!-- HISTORY DRAWER -->
+  <aside class="history-drawer" id="historyDrawer">
+    <div class="history-drawer__header">
+      <h3>Recent Projects</h3>
+      <button class="icon-btn" id="historyClose">✕</button>
+    </div>
+    <div class="history-list" id="historyList"></div>
+    <button class="btn btn--danger btn--sm" id="clearHistory">Clear All</button>
+  </aside>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+
+  <!-- TEMPLATE MODAL -->
+  <div class="modal-overlay" id="templateModal">
+    <div class="modal">
+      <div class="modal__header">
+        <h2>Choose a Template</h2>
+        <button class="icon-btn" id="templateClose">✕</button>
+      </div>
+      <div class="template-grid" id="templateGrid"></div>
+    </div>
+  </div>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="workspace">
+    <!-- FORM PANEL -->
+    <section class="panel panel--form" id="formPanel">
+      <div class="panel__inner">
+
+        <!-- GitHub Auto-fill -->
+        <div class="autofill-card">
+          <div class="autofill-card__icon">⚡</div>
+          <div class="autofill-card__body">
+            <p class="autofill-card__label">Auto-fill from GitHub</p>
+            <div class="autofill-row">
+              <input class="input" type="text" id="ghRepoUrl" placeholder="https://github.com/user/repo" />
+              <button class="btn btn--accent" id="loadRepo">Load</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTIONS TOGGLE -->
+        <div class="form-section">
+          <h3 class="form-section__title">
+            <span class="section-num">01</span> Sections
+          </h3>
+          <div class="sections-toggle-grid" id="sectionsToggleGrid"></div>
+        </div>
+
+        <!-- PROJECT INFO -->
+        <div class="form-section" id="sectionProjectInfo">
+          <h3 class="form-section__title">
+            <span class="section-num">02</span> Project Info
+          </h3>
+          <div class="field-group">
+            <label class="label">Project Name *</label>
+            <input class="input" type="text" id="projectName" placeholder="ReadmeX" />
+          </div>
+          <div class="field-group">
+            <label class="label">Short Description *</label>
+            <textarea class="input textarea" id="projectDesc" placeholder="A blazing-fast README generator for developers." rows="3"></textarea>
+          </div>
+          <div class="field-row">
+            <div class="field-group">
+              <label class="label">GitHub Username</label>
+              <input class="input" type="text" id="ghUsername" placeholder="usaidkhot159" />
+            </div>
+            <div class="field-group">
+              <label class="label">Project Type</label>
+              <select class="input select" id="projectType">
+                <option value="web">Web App</option>
+                <option value="api">API / Backend</option>
+                <option value="cli">CLI Tool</option>
+                <option value="library">Library / Package</option>
+                <option value="mobile">Mobile App</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field-group">
+              <label class="label">Live Demo URL</label>
+              <input class="input" type="url" id="demoUrl" placeholder="https://your-app.vercel.app" />
+            </div>
+            <div class="field-group">
+              <label class="label">License</label>
+              <select class="input select" id="licenseType">
+                <option value="MIT">MIT</option>
+                <option value="Apache-2.0">Apache 2.0</option>
+                <option value="GPL-3.0">GPL 3.0</option>
+                <option value="BSD-3-Clause">BSD 3-Clause</option>
+                <option value="Unlicense">Unlicense</option>
+                <option value="None">None</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- BADGES -->
+        <div class="form-section" id="sectionBadges">
+          <h3 class="form-section__title">
+            <span class="section-num">03</span> Badges
+          </h3>
+          <div class="badge-grid" id="badgeGrid"></div>
+        </div>
+
+        <!-- TECH STACK -->
+        <div class="form-section" id="sectionTechStack">
+          <h3 class="form-section__title">
+            <span class="section-num">04</span> Tech Stack
+          </h3>
+          <div id="techStackSelector"></div>
+        </div>
+
+        <!-- FEATURES -->
+        <div class="form-section" id="sectionFeatures">
+          <h3 class="form-section__title">
+            <span class="section-num">05</span> Features
+          </h3>
+          <div class="feature-list" id="featureList"></div>
+          <button class="btn btn--ghost btn--sm" id="addFeature">+ Add Feature</button>
+        </div>
+
+        <!-- INSTALLATION -->
+        <div class="form-section" id="sectionInstallation">
+          <h3 class="form-section__title">
+            <span class="section-num">06</span> Installation
+          </h3>
+          <div class="field-group">
+            <label class="label">Installation Type</label>
+            <select class="input select" id="installType">
+              <option value="html">HTML / CSS / JS</option>
+              <option value="node">Node.js / npm</option>
+              <option value="python">Python / pip</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+          <div class="field-group" id="customInstallWrapper" style="display:none">
+            <label class="label">Custom Install Commands</label>
+            <textarea class="input textarea mono" id="customInstall" rows="5" placeholder="# Enter commands..."></textarea>
+          </div>
+        </div>
+
+        <!-- USAGE -->
+        <div class="form-section" id="sectionUsage">
+          <h3 class="form-section__title">
+            <span class="section-num">07</span> Usage
+          </h3>
+          <textarea class="input textarea mono" id="usageContent" rows="5" placeholder="Describe how to use your project..."></textarea>
+        </div>
+
+        <!-- SCREENSHOTS -->
+        <div class="form-section" id="sectionScreenshots">
+          <h3 class="form-section__title">
+            <span class="section-num">08</span> Screenshots
+          </h3>
+          <div class="screenshot-list" id="screenshotList"></div>
+          <button class="btn btn--ghost btn--sm" id="addScreenshot">+ Add Screenshot</button>
+        </div>
+
+        <!-- ROADMAP -->
+        <div class="form-section" id="sectionRoadmap">
+          <h3 class="form-section__title">
+            <span class="section-num">09</span> Roadmap
+          </h3>
+          <div class="roadmap-list" id="roadmapList"></div>
+          <button class="btn btn--ghost btn--sm" id="addRoadmap">+ Add Roadmap Item</button>
+        </div>
+
+        <!-- CONTRIBUTING -->
+        <div class="form-section" id="sectionContributing">
+          <h3 class="form-section__title">
+            <span class="section-num">10</span> Contributing
+          </h3>
+          <textarea class="input textarea" id="contributingContent" rows="4" placeholder="Contributions are welcome! Please open an issue first to discuss what you'd like to change."></textarea>
+        </div>
+
+        <!-- AUTHOR -->
+        <div class="form-section" id="sectionAuthor">
+          <h3 class="form-section__title">
+            <span class="section-num">11</span> Author
+          </h3>
+          <div class="field-row">
+            <div class="field-group">
+              <label class="label">Your Name</label>
+              <input class="input" type="text" id="authorName" placeholder="Usaid Khot" />
+            </div>
+            <div class="field-group">
+              <label class="label">Twitter / X</label>
+              <input class="input" type="text" id="authorTwitter" placeholder="@handle" />
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="label">Portfolio URL</label>
+            <input class="input" type="url" id="authorPortfolio" placeholder="https://yoursite.com" />
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- DIVIDER + ACTIONS -->
+    <div class="workspace-divider">
+      <div class="score-pill" id="scorePill">
+        <span class="score-pill__label">Score</span>
+        <span class="score-pill__value" id="scorePillValue">0%</span>
+      </div>
+      <button class="divider-btn" id="saveProject" title="Save to history">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      </button>
+      <button class="divider-btn" id="previewToggle" title="Toggle preview mode">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+
+    <!-- PREVIEW PANEL -->
+    <section class="panel panel--preview" id="previewPanel">
+      <div class="preview-toolbar">
+        <div class="preview-tabs">
+          <button class="preview-tab active" data-tab="github">GitHub Preview</button>
+          <button class="preview-tab" data-tab="raw">Raw Markdown</button>
+        </div>
+        <div class="preview-actions">
+          <button class="btn btn--ghost btn--sm" id="copyMarkdown">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+          <button class="btn btn--accent btn--sm" id="downloadReadme">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download
+          </button>
+        </div>
+      </div>
+
+      <!-- GitHub-style preview -->
+      <div class="preview-pane" id="previewGithub">
+        <div class="gh-repo-header" id="ghRepoHeader"></div>
+        <div class="gh-readme-body" id="ghReadmeBody"></div>
+      </div>
+
+      <!-- Raw markdown -->
+      <div class="preview-pane hidden" id="previewRaw">
+        <pre class="raw-markdown" id="rawMarkdown"></pre>
+      </div>
+
+      <!-- Score panel -->
+      <div class="score-panel" id="scorePanel">
+        <div class="score-panel__header">
+          <span class="score-panel__title">README Score</span>
+          <span class="score-panel__pct" id="scorePercent">0%</span>
+        </div>
+        <div class="score-bar-track">
+          <div class="score-bar-fill" id="scoreBarFill"></div>
+        </div>
+        <ul class="score-checklist" id="scoreChecklist"></ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- JS MODULES -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
